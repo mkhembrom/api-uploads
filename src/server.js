@@ -28,10 +28,16 @@ router.post('/uploads', upload.single("upload"), async (req, res) => {
         const urls = [];
         const { path: pathName } = req.file;
 
-        const data = await cloudinary.uploader.upload(pathName, { public_id: "Images" });
+        const locaFilePath = pathName;
+
+        const mainFolderName = "main";
+        const filePathOnCloudinary =
+            mainFolderName + "/" + locaFilePath;
+
+        const data = await cloudinary.uploader.upload(pathName, { public_id: filePathOnCloudinary });
         urls.push(data.secure_url);
 
-        res.status(200).json({ status: "success", url: urls, data });
+        res.status(200).json({ status: "success", url: urls });
 
     } catch (error) {
         console.log(error.message)
